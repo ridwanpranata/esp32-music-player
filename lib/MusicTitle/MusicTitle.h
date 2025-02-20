@@ -11,6 +11,8 @@ public:
     void begin();
     void startSong();
     void endSong();
+    void displayOff();
+    void clearDisplay();
 
 private:
     LiquidCrystal_I2C &_lcd; // Reference to LiquiedCrystal_I2C object that has defined in main program

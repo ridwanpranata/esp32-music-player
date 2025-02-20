@@ -19,6 +19,11 @@ void MusicTitle::begin()
 
 void MusicTitle::startSong()
 {
+    _lcd.backlight();
+    _lcd.setCursor(0, 0);
+    _lcd.print("[Music Player] : ON ");
+    _lcd.setCursor(0, 3);
+    _lcd.print("By: ESP 32");
     for (size_t i = 0; i < 3; i++)
     {
         _lcd.setCursor(0, 1);
@@ -43,4 +48,15 @@ void MusicTitle::endSong()
     }
     _lcd.setCursor(0, 1);
     _lcd.print("Song : -            ");
+}
+
+void MusicTitle::displayOff() {
+    _lcd.setCursor(0, 0);
+    _lcd.print("[Music Player] : OFF");
+}
+
+void MusicTitle::clearDisplay() {
+    delay(3000);
+    _lcd.clear();
+    _lcd.noBacklight();
 }

@@ -20,3 +20,7 @@ void BuzzerTone::playTone(int frequency, int duration)
     ledcWrite(_channel, 0);
     delay(200);
 }
+
+void BuzzerTone::stop() {
+    ledcWriteTone(_channel, 0);  // Matikan buzzer
+}
