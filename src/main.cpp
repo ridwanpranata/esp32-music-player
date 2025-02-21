@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "BuzzerTone.h"
 #include "TwinkleMelody.h"
+#include "OdeToJoyMelody.h"
 #include "LiquidCrystal_I2C.h"
 #include "MusicTitle.h"
 
@@ -20,11 +21,12 @@
 
 BuzzerTone buzzer(BUZZER_PIN, CHANNEL, RESOLUTION, VOLUME);
 TwinkleMelody twinkle(buzzer);
+OdeToJoyMelody odeToJoy(buzzer);
 
 LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLS, LCD_ROWS);
 MusicTitle musicTitle(lcd);
 
-bool systemOn = true;
+bool systemOn = false;
 
 void setup()
 {
@@ -38,21 +40,20 @@ void loop()
 {
     bool switchState = digitalRead(SWITCH_PIN) == LOW;
 
-    if (switchState && systemOn) {
+    if (switchState && !systemOn) {
         systemOn = true;
         Serial.println("Sistem ON");
-        musicTitle.startSong();
-        twinkle.play();
+        musicTitle.startSong(); // todo : nanti buat untuk music title nya fleksible tergantung lagu
+        odeToJoy.play();
         musicTitle.endSong();
-        delay(2000);
-    } else if (switchState && !systemOn) {
-        systemOn = true;
-    } else if (!switchState && systemOn) {
+        delay(1000);
+    } 
+    else if (!switchState && systemOn) {
         systemOn = false;
-        musicTitle.displayOff();
-    } else if (!switchState && !systemOn) {
         Serial.println("Sistem OFF");
-        buzzer.stop(); 
+        buzzer.stop();
         musicTitle.clearDisplay();
     }
+
+    delay(100); // Hindari looping terlalu cepat
 }
